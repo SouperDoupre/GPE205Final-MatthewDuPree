@@ -14,11 +14,15 @@ public abstract class AIController : Controller
     public float FOV;
     public float maxViewDistance;
     private int currentWaypoint = 0;
-    private float lastStateChangeTime;
+    protected float lastStateChangeTime;
+    public float killPoint;
+    private bool isDead;
+    public bool isLooping;
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
+        isDead = false;
         TargetPlayer();
         if (GameManager.instance != null)
         {
@@ -43,6 +47,7 @@ public abstract class AIController : Controller
     public override void Update()
     {
         base.Update();
+        Dead();
         MakeDescisions();
     }
     public virtual void ChangeState(AIStates newState)
@@ -80,7 +85,10 @@ public abstract class AIController : Controller
             Chase(target);
             if (CanSee(target))
             {
-                pawn.Shoot();
+                if(pawn.shooter != null)
+                {
+                    pawn.Shoot();
+                }
             }
         }
     }
@@ -136,28 +144,35 @@ public abstract class AIController : Controller
                     {
                         target = GameManager.instance.players[0].pawn.gameObject;
                     }
+                    else
+                    {
+                        return;
+                    }
                 }
             }
         }
     }
     public void Patrol()
     {
-        if(waypoints.Length > currentWaypoint)
+        if(waypoints != null)
         {
-            Chase(waypoints[currentWaypoint]);
-            if (Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) < waypointStopDistance)
+            if (waypoints.Length > currentWaypoint)
             {
-                currentWaypoint++;
+                Chase(waypoints[currentWaypoint]);
+                if (Vector3.Distance(pawn.transform.position, waypoints[currentWaypoint].position) < waypointStopDistance)
+                {
+                    currentWaypoint++;
+                }
             }
-        }
-        else
-        {
-            RestartPatrol();
+            else
+            {
+                RestartPatrol();
+            }
         }
     }
     public void RestartPatrol()
     {
-        if (pawn.isLooping)
+        if (isLooping)
         {
             currentWaypoint = 0;
         }
@@ -226,19 +241,19 @@ public abstract class AIController : Controller
     public bool CanHear()
     {
         NoiseMaker nMaker = target.GetComponent<NoiseMaker>();
-        if(nMaker != null)
+        if(nMaker == null)
         {
             if(nMaker.noise <= 0)
             {
                 return false;
             }
-            return false;
         }
         if(nMaker.noise >= 1)
         {
             float totalDistance = nMaker.noise + pawn.hearingDistance;
             if(Vector3.Distance(pawn.transform.position, target.transform.position) <= totalDistance)
             {
+                Debug.Log("can hear");
                 return true;
             }
             else
@@ -254,7 +269,7 @@ public abstract class AIController : Controller
     public bool CanSee(GameObject target)
     {
         Vector3 enemyToTarget = target.transform.position - pawn.transform.position;
-        float angleToTarget = Vector3.Angle(enemyToTarget, pawn.transform.position);
+        float angleToTarget = Vector3.Angle(enemyToTarget, pawn.transform.forward);
         if(target != null)
         {
             if(angleToTarget < FOV && enemyToTarget.magnitude <= maxViewDistance)
@@ -280,9 +295,19 @@ public abstract class AIController : Controller
         {
             if (hit.transform.CompareTag("Player"))
             {
+                Debug.DrawLine(eyes, target.transform.position, Color.white);
+                Debug.Log("Can See");
                 pawn.RotateTowards(target.transform.position);
             }
         }
         return false;
+    }
+    public void Dead()
+    {
+        if (pawn == null && !isDead)
+        {
+            GameManager.FindObjectOfType<PlayerController>().AddScore(killPoint);
+            isDead = true;
+        }
     }
 }

@@ -21,8 +21,6 @@ public abstract class Pawn : MonoBehaviour
     public float bDamage;
     //Enemy hearing
     public float hearingDistance;
-    //Enemy patrol looping?
-    public bool isLooping;
 
     // Start is called before the first frame update
     public virtual void Start()

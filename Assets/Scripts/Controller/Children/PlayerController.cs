@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : Controller
 {
@@ -10,6 +11,8 @@ public class PlayerController : Controller
     public KeyCode lookRightKey;
     public KeyCode jumpKey;
     public KeyCode shootKey;
+    public float score;
+    public Text scoreDis;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -37,6 +40,14 @@ public class PlayerController : Controller
     public override void Update()
     {
         base.Update();
+        if(scoreDis != null)
+        {
+            scoreDis.text = "Score: " + score;
+        }
+        if(pawn == null)
+        {
+            GameManager.instance.ChangeState(GameManager.GameStates.GameOverScreen);
+        }
     }
     public override void ProccessInputs()
     {
@@ -63,5 +74,9 @@ public class PlayerController : Controller
         {
             pawn.Shoot();
         }
+    }
+    public void AddScore(float amount)
+    {
+        score = score + amount;
     }
 }

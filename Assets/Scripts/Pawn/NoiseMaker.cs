@@ -16,13 +16,16 @@ public class NoiseMaker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(pcon.moveForwardKey) || Input.GetKey(pcon.moveBackwardKey))
+        if(pcon != null)
         {
-            noise = volumeDistance;
-        }
-        else
-        {
-            noise = 0;
+            if (Input.GetKey(pcon.moveForwardKey) || Input.GetKey(pcon.moveBackwardKey))
+            {
+                noise = volumeDistance;
+            }
+            else
+            {
+                noise = 0;
+            }
         }
     }
 }

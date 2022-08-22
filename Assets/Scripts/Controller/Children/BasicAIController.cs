@@ -39,6 +39,17 @@ public class BasicAIController : AIController
                             ChangeState(AIStates.Chase);
                         }
                         break;
+                    case AIStates.Alert:
+                        DoAlertState();
+                        if (CanSee(target))
+                        {
+                            ChangeState(AIStates.Chase);
+                        }
+                        if(lastStateChangeTime < Time.time)
+                        {
+                            ChangeState(AIStates.Idle);
+                        }
+                        break;
                     case AIStates.Chase:
                         DoChaseState();
                         if(IsDisLessThan(target, 5))
@@ -53,7 +64,7 @@ public class BasicAIController : AIController
                         break;
                     case AIStates.Attack:
                         DoAttackState();
-                        if(IsDisGreaterThan(target, 6))
+                        if(IsDisGreaterThan(target, 5))
                         {
                             ChangeState(AIStates.Chase);
                             pawn.moveSpeed = pawn.moveSpeed * 2;
@@ -61,7 +72,7 @@ public class BasicAIController : AIController
                         break;
                     case AIStates.RTB:
                         DoRTB();
-                        if(AmIAtBase(post, .5f))
+                        if(AmIAtBase(post, waypointStopDistance))
                         {
                             ChangeState(AIStates.Idle);
                         }
@@ -70,4 +81,5 @@ public class BasicAIController : AIController
             }
         }
     }
+
 }

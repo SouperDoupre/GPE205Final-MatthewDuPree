@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6276429781607818183}
   - component: {fileID: 9139508084279986744}
+  - component: {fileID: 439505936199971558}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -43,6 +44,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4949d81857a9ba45abe9384a5092f12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSpawnTransform: {fileID: 0}
+  playerSpawnTransform: {fileID: 4450731665555266184, guid: f2145874a48d7714193f4ba18a4306d8, type: 3}
   players: []
   enemies: []
+--- !u!114 &439505936199971558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5767147060055810828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce57827379dad66439cd042271a8dd9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelPrefabs:
+  - {fileID: 8519169902971566378, guid: 62bcd1e8ee0516345b77f21320d9ff46, type: 3}
+  - {fileID: 1365572766635734926, guid: 9130c356f839c6d4dba3025343e359ad, type: 3}
+  - {fileID: 3136225317905091467, guid: 5c9cd540dd8c7d543b6099dc863f11eb, type: 3}
+  rows: 0
+  columns: 0
+  lvlWidth: 50
+  lvlHeight: 50
+  lvlSeed: 0
+  isRandom: 0
+  MapOfTheDay: 0

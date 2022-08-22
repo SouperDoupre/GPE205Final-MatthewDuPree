@@ -6,6 +6,7 @@ public class PlayerPawn : Pawn
 {
     Rigidbody rb;
     private float lastTimeShot;
+    public AudioSource shot;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -54,6 +55,7 @@ public class PlayerPawn : Pawn
             if(rb != null)
             {
                 shooter.Shoot(bullet, bSpeed, bDamage, bLife);
+                shot.Play();
             }
             lastTimeShot = Time.time;
         }
